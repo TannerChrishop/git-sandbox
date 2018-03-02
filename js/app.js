@@ -206,5 +206,80 @@ jQuery(function ($) {
 		}
 	};
 
+	var art = '                                                                         :.+8.\n\
+                                                                      I=.$= O\n\
+                                                                     7O?7D?O~I$\n\
+                                                                    ,+Z?+OI+:77\n\
+                                                                   ~Z+?OO$OO7I\n\
+                                                                    .IOD?=$ZZO,\n\
+                                                                    OI~IZ+~8=,\n\
+DDDDDDDDDDDDDDDDDDDD    DDDD8          8DDDDDDDDDDDDDDDDDDDDD     7Z~+Z+$7D+?\n\
+DDDDDDDDDDDDDDDDDDDD8   DDDD8          8DDDDDDDDDDDDDDDDDDDDD     =$II$Z~IZ+\n\
+DDDD8           DDDDD   DDDD8                   DDDDD             ?$:==:~$O\n\
+DDDD8           DDDDD   DDDD8                   DDDDD             :OO78.Z7Z\n\
+DDDD8           DDDD8   DDDD8                   DDDDO               ?$ZZ:\n\
+DDDDDDDDDDDDDDDDDDD8    DDDD8                   DDDDD               :?\n\
+DDDDDDDDDDDDDDDDDDD8    DDDD8                   DDDDD              ,?\n\
+DDDD8            DDDD   DDDD8                   DDDDD             ,+:\n\
+DDDD8            DDDD   DDDD8                   DDDDO             :+\n\
+DDDD8           DDDDD   DDDD8                   DDDDO            :?\n\
+DDDDDDDDDDDDDDDDDDDD8   DDDDDDDDDDDDDDDDDD8     DDDDD            ,~\n\
+DDDDDDDDDDDDDDDDDD8     DDDDDDDDDDDDDDDDDD8     DDDDD           ,+\n\
+                                                                :+\n\
+                                                               ,?          I7\n\
+                                                              :+       7I7I7I\n\
+                                                              ~+       7I777?\n\
+                                                              ?    777\n\
+                                                             ~ 77$\n\
+                                                            I+\n';
+
+	function getCharacters(art) {
+		var i = art.length;
+		// used to track the time at which the letter should print regardless of the current i (which is the character position including whitespace)
+		var i_letter = 0;
+		var s = ''; // string of whitespace
+		var characters = [];
+		do {
+			i = (i + 1) % art.length;
+			var c = art[i];
+
+			var isWhitespace = /\s/.test(c);
+			if (isWhitespace) {
+				s += c;
+				continue; // don't print the whitespace yet
+			} else {
+				if (s.length > 0) {
+					c = s + c; // be sure to include the character currently being parsed
+					s = '';
+				}
+
+				i_letter = (i_letter + 1) % art.length;
+
+				characters.push(c);
+			}
+		}
+		while (i);
+
+		return characters;
+	}
+
+	var characters = getCharacters(art);
+
+	var output = '';
+
+	function printCharacterByIndex(characters, index, delay) {
+		if (characters[index] === undefined) return;
+
+		output += characters[index];
+		console.clear();
+		console.log(output)
+
+		window.setTimeout(printCharacterByIndex.bind(null, characters, index + 1, delay), delay);
+	}
+
+	console.clear();
+	printCharacterByIndex(getCharacters(art), 0, 100);
+
+
 	App.init();
 });
