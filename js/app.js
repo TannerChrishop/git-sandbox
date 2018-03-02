@@ -26,6 +26,16 @@ jQuery(function ($) {
 
 			return uuid;
 		},
+		lol: function() {
+			console.log(`%c ________________________________________
+			< mooooooooooooooooooooooooooooooooooooo >
+ 			----------------------------------------
+        \\   ^__^       LOL
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||`, "font-family:monospace")
+		},
 		pluralize: function (count, word) {
 			return count === 1 ? word : word + 's';
 		},
