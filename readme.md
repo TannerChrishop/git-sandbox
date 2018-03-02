@@ -1,3 +1,12 @@
+# WatchandCode Git-Sandbox
+
+> In 'getting started with open source', both Gordon and Roilan deeply emphasise the importance of practicing trivial collaberation with git/github, in order to run into some of the real-world scenarios that tutorials can't cover. To that end I've created a toy repository that will have a master branch, some mock broken code, issues, branches etc.
+
+> It would be great if people could step forward and fork, raise issues, practice commenting, break/fixing code etc - this is not a demonstration of skill so it almost doesn't matter what is done. If we can get merge conflicts, even better
+
+
+
+
 # jQuery TodoMVC Example
 
 > jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers. With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.
