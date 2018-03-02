@@ -26,7 +26,7 @@ jQuery(function ($) {
 
 			return uuid;
 		},
-		lol: function() {
+		lol: function () {
 			console.log(`%c ________________________________________
 			< mooooooooooooooooooooooooooooooooooooo >
  			----------------------------------------
