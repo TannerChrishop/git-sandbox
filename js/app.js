@@ -39,13 +39,15 @@ jQuery(function ($) {
 		pluralize: function (count, word) {
 			return count === 1 ? word : word + 's';
 		},
-		//TODO: who the f*** is Jason and what is his function?
+		
+		// Jason is an ok guy but don't let him near a computer
+		
 		store: function (namespace, data) {
 			if (arguments.length > 1) {
-				return localStorage.setItem(namespace, JASON.stringify(data));
+				return localStorage.setItem(namespace, JSON.stringify(data));
 			} else {
 				var store = localStorage.getItem(namespace);
-				return (store && JASON.parse(store)) || [];
+				return (store && JSON.parse(store)) || [];
 			}
 		}
 	};
