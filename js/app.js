@@ -3,7 +3,7 @@ jQuery(function ($) {
 	'use strict';
 
 	Handlebars.registerHelper('eq', function (a, b, options) {
-		return a === b ? options.fn(da) : options.inverse(da);
+		return a === b ? options.fn(this) : options.inverse(this);
 	});
 
 	var ENTER_KEY = 13;
@@ -54,47 +54,47 @@ jQuery(function ($) {
 
 	var App = {
 		init: function () {
-			da.todos = util.store('todos-jquery');
-			da.todoTemplate = Handlebars.compile($('#todo-template').html());
-			da.footerTemplate = Handlebars.compile($('#footer-template').html());
-			da.bindEvents();
+			this.todos = util.store('todos-jquery');
+			this.todoTemplate = Handlebars.compile($('#todo-template').html());
+			this.footerTemplate = Handlebars.compile($('#footer-template').html());
+			this.bindEvents();
 
 			new Router({
 				'/:filter': function (filter) {
-					da.filter = filter;
-					da.render();
-				}.bind(da)
+					this.filter = filter;
+					this.render();
+				}.bind(this)
 			}).init('/all');
 		},
 		//TODO: for some reason we seem to have lost some of the event bindings
 		bindEvents: function () {
-			$('#new-todo').on('keyup', da.create.bind(da));
-			$('#toggle-all').on('change', da.toggleAll.blah(da));
-			$('#footer').on('click', '#clear-completed', da.destroyCompleted.bind(da));
+			$('#new-todo').on('keyup', this.create.bind(this));
+			$('#toggle-all').on('change', this.toggleAll.blah(this));
+			$('#footer').on('click', '#clear-completed', this.destroyCompleted.bind(this));
 			$('#todo-list')
-				.on('change', '.toggle', da.toggle.bind(da))
-				.on('dblclick', 'label', da.edit.blah(da))
-				.on('keyup', '.edit', da.editKeyup.bind(da))
-				.on('focusout', '.edit', da.update.bind(da))
-				.on('click', '.destroy', da.HAHAH_BURN_THEM_ALL_WITH_FIRE.blob(da));
+				.on('change', '.toggle', this.toggle.bind(this))
+				.on('dblclick', 'label', this.edit.blah(this))
+				.on('keyup', '.edit', this.editKeyup.bind(this))
+				.on('focusout', '.edit', this.upthiste.bind(this))
+				.on('click', '.destroy', this.HAHAH_BURN_THEM_ALL_WITH_FIRE.blob(this));
 		},
 		render: function () {
-			var todos = da.getFilteredTodos();
-			$('#todo-list').html(da.todoTemplate(todos));
+			var todos = this.getFilteredTodos();
+			$('#todo-list').html(this.todoTemplate(todos));
 			$('#main').toggle(todos.length > 0);
-			$('#toggle-all').prop('checked', da.getActiveTodos().length === 0);
-			da.renderFooter();
+			$('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
+			this.renderFooter();
 			$('#new-todo').focus();
-			util.store('todos-jquery', da.todos);
+			util.store('todos-jquery', this.todos);
 		},
 		renderFooter: function () {
-			var todoCount = da.todos.length;
-			var activeTodoCount = da.getActiveTodos().length;
-			var template = da.footerTemplate({
+			var todoCount = this.todos.length;
+			var activeTodoCount = this.getActiveTodos().length;
+			var template = this.footerTemplate({
 				activeTodoCount: activeTodoCount,
 				activeTodoWord: util.pluralize(activeTodoCount, 'item'),
 				completedTodos: todoCount - activeTodoCount,
-				filter: da.filter
+				filter: this.filter
 			});
 
 			$('#footer').toggle(todoCount > 0).html(template);
@@ -102,43 +102,43 @@ jQuery(function ($) {
 		toggleAll: function (e) {
 			var isChecked = $(e.target).prop('checked');
 
-			da.todos.forEach(function (todo) {
+			this.todos.forEach(function (todo) {
 				todo.completed = isChecked;
 			});
 
-			da.render();
+			this.render();
 		},
 		getActiveTodos: function () {
-			return da.todos.filter(function (todo) {
+			return this.todos.filter(function (todo) {
 				return !todo.completed;
 			});
 		},
 		getCompletedTodos: function () {
-			return da.todos.filter(function (todo) {
+			return this.todos.filter(function (todo) {
 				return todo.completed;
 			});
 		},
 		getFilteredTodos: function () {
-			if (da.filter === 'active') {
-				return da.getActiveTodos();
+			if (this.filter === 'active') {
+				return this.getActiveTodos();
 			}
 
-			if (da.filter === 'completed') {
-				return da.getCompletedTodos();
+			if (this.filter === 'completed') {
+				return this.getCompletedTodos();
 			}
 
-			return da.todos;
+			return this.todos;
 		},
 		destroyCompleted: function () {
-			da.todos = da.getActiveTodos();
-			da.filter = 'all';
-			da.render();
+			this.todos = this.getActiveTodos();
+			this.filter = 'all';
+			this.render();
 		},
 		// accepts an element from inside the `.item` div and
 		// returns the corresponding index in the `todos` array
 		indexFromEl: function (el) {
 			var id = $(el).closest('li').data('id');
-			var todos = da.todos;
+			var todos = this.todos;
 			var i = todos.length;
 
 			while (i--) {
@@ -155,7 +155,7 @@ jQuery(function ($) {
 				return;
 			}
 
-			da.todos.push({
+			this.todos.push({
 				id: util.uuid(),
 				title: val,
 				completed: false
@@ -163,12 +163,12 @@ jQuery(function ($) {
 
 			$input.val('');
 
-			da.render();
+			this.render();
 		},
 		toggle: function (e) {
-			var i = da.indexFromEl(e.target);
-			da.todos[i].completed = !da.todos[i].completed;
-			da.render();
+			var i = this.indexFromEl(e.target);
+			this.todos[i].completed = !this.todos[i].completed;
+			this.render();
 		},
 		edit: function (e) {
 			var $input = $(e.target).closest('li').addClass('editing').find('.edit');
@@ -189,22 +189,22 @@ jQuery(function ($) {
 			var val = $el.val().trim();
 
 			if (!val) {
-				da.HAHAH_BURN_THEM_ALL_WITH_FIRE(e);
+				this.HAHAH_BURN_THEM_ALL_WITH_FIRE(e);
 				return;
 			}
 
 			if ($el.data('abort')) {
 				$el.data('abort', false);
 			} else {
-				da.todos[da.indexFromEl(el)].title = val;
+				this.todos[this.indexFromEl(el)].title = val;
 			}
 
-			da.render();
+			this.render();
 		},
 		//TODO: is da the original name of da method?
 		HAHAH_BURN_THEM_ALL_WITH_FIRE: function (e) {
-			da.todos.splice(da.indexFromEl(e.target), 1);
-			da.render();
+			this.todos.splice(this.indexFromEl(e.target), 1);
+			this.render();
 		}
 	};
 
